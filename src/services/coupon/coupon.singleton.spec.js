@@ -53,4 +53,36 @@ describe("Coupon Singleton Unit Testing", () => {
     );
     expect(discountPrice).toEqual(0);
   });
+
+  test("add offer codes", () => {
+    CouponSingleton.addCoupon("OFR004", {
+      discount: 7,
+      distanceRange: { min: 50, max: 150 },
+      weightRange: { min: 100, max: 250 },
+    });
+    const coupons = CouponSingleton.getAllCoupons();
+    expect(Object.keys(coupons)).toHaveLength(4);
+    expect(coupons).toEqual({
+      OFR001: {
+        discount: 10,
+        distanceRange: { min: 0, max: 200 },
+        weightRange: { min: 70, max: 200 },
+      },
+      OFR002: {
+        discount: 7,
+        distanceRange: { min: 50, max: 150 },
+        weightRange: { min: 100, max: 250 },
+      },
+      OFR003: {
+        discount: 5,
+        distanceRange: { min: 50, max: 250 },
+        weightRange: { min: 10, max: 150 },
+      },
+      OFR004: {
+        discount: 7,
+        distanceRange: { min: 50, max: 150 },
+        weightRange: { min: 100, max: 250 },
+      },
+    });
+  });
 });
