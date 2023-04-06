@@ -35,4 +35,22 @@ describe("Coupon Singleton Unit Testing", () => {
       weightRange: { min: 70, max: 200 },
     });
   });
+
+  test("check coupon discount eligibility", () => {
+    const discountPrice = CouponSingleton.checkCouponDiscountPrice(
+      "OFR001",
+      100,
+      100
+    );
+    expect(discountPrice).toEqual(10);
+  });
+
+  test("check coupon no discount eligibility", () => {
+    const discountPrice = CouponSingleton.checkCouponDiscountPrice(
+      "OFR001",
+      1000,
+      100
+    );
+    expect(discountPrice).toEqual(0);
+  });
 });
