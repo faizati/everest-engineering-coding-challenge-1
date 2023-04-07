@@ -1,4 +1,4 @@
-const { CouponSingleton } = require("./coupon.singleton");
+const CouponSingleton = require("./coupon.singleton");
 
 describe("Coupon Singleton Unit Testing", () => {
   test("check default length of coupon", () => {

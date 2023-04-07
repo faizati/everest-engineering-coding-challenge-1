@@ -27,6 +27,10 @@ class DeliverySingleton {
   getAllPackages() {
     return this.pckg;
   }
+
+  getNoOfPackage() {
+    return this.noOfPackage;
+  }
 }
 
-exports.DeliverySingleton = new DeliverySingleton();
+export default new DeliverySingleton();

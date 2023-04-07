@@ -1,5 +1,5 @@
-const coupons = require("../../data/coupon/coupons.json");
-const { CouponUtils } = require("../utils/coupon.util");
+import coupons from "../../data/coupon/coupons.json" assert { type: "json" };
+import { CouponUtils } from "../utils/coupon.util.js";
 
 class CouponSingleton {
   constructor() {
@@ -62,4 +62,4 @@ class CouponSingleton {
   }
 }
 
-exports.CouponSingleton = new CouponSingleton();
+export default new CouponSingleton();

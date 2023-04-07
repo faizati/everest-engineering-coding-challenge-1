@@ -1,4 +1,4 @@
-const { CouponSingleton } = require("../coupon/coupon.singleton");
+const CouponSingleton = require("../coupon/coupon.singleton");
 const { PackagePriceDiscountFacade } = require("./price");
 const { DeliverySingleton } = require("../delivery/delivery.singleton");
 const { ModelPackage } = require("../../models/package");
