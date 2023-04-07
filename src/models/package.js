@@ -7,4 +7,12 @@ class ModelPackage {
   }
 }
 
+class ModelPackageWithPrice extends ModelPackage {
+  constructor(packageId, weight, distance, couponCode, price) {
+    super(packageId, weight, distance, couponCode);
+    this.price = price;
+  }
+}
+
 exports.ModelPackage = ModelPackage;
+exports.ModelPackageWithPrice = ModelPackageWithPrice;

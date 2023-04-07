@@ -18,7 +18,6 @@ class DeliverySingleton {
   }
 
   addPackage(pckg) {
-    console.log(this.pckg.length);
     if (this.pckg.length < this.noOfPackage) {
       this.pckg.push(pckg);
       return "Package added successfully";

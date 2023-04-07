@@ -22,17 +22,9 @@ describe("Delivery Singleton Unit Testing", () => {
 
   test("add package", () => {
     DeliverySingleton.setNoOfPackage(1);
-    const tempPackage = new ModelPackage({
-      id: "PKG001",
-      weight: 10,
-      distance: 100,
-    });
+    const tempPackage = new ModelPackage("PKG001", 10, 100, "OFR001");
 
-    const tempPackage2 = new ModelPackage({
-      id: "PKG002",
-      weight: 10,
-      distance: 100,
-    });
+    const tempPackage2 = new ModelPackage("PKG002", 10, 100, "OFR002");
 
     const result = DeliverySingleton.addPackage(tempPackage);
     expect(result).toBe("Package added successfully");
