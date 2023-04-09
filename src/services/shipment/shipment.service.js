@@ -1,5 +1,5 @@
 export class ShipmentsService {
-  static getShipmentList(packages, maxCarryWeight = 200) {
+  static findSubsets(packages, maxCarryWeight = 200) {
     const subsets = [];
 
     // Generate all possible subsets of packages
@@ -23,7 +23,10 @@ export class ShipmentsService {
     // Sort subsets by weight in descending order
     subsets.sort((a, b) => b.weight - a.weight);
 
-    // Remove packages that appear in higher-weighted subsets
+    return subsets;
+  }
+
+  static removePackageThatAppearInHigherWeightedSubsets(subsets) {
     const uniquePackages = new Set();
     const result = [];
 
@@ -46,52 +49,57 @@ export class ShipmentsService {
         result.push(subset);
       }
     }
-
+    return result;
+  }
+  static getShipmentList(packages, maxCarryWeight = 200) {
+    const subsets = ShipmentsService.findSubsets(packages, maxCarryWeight);
+    const result =
+      ShipmentsService.removePackageThatAppearInHigherWeightedSubsets(subsets);
     return result;
   }
 }
 
-console.log(
-  ShipmentsService.getShipmentList([
-    {
-      id: "PKG1",
-      weight: 50,
-      distance: 30,
-      discountValue: 0,
-      totalCost: 175,
-      estimateTimeDelivery: 0,
-    },
-    {
-      id: "PKG2",
-      weight: 75,
-      distance: 125,
-      discountValue: 0,
-      totalCost: 275,
-      estimateTimeDelivery: 0,
-    },
-    {
-      id: "PKG3",
-      weight: 175,
-      distance: 100,
-      discountValue: 35,
-      totalCost: 665,
-      estimateTimeDelivery: 0,
-    },
-    {
-      id: "PKG4",
-      weight: 110,
-      distance: 60,
-      discountValue: 0,
-      totalCost: 275,
-      estimateTimeDelivery: 0,
-    },
-    {
-      id: "PKG5",
-      weight: 155,
-      distance: 95,
-      discountValue: 35,
-      totalCost: 665,
-      estimateTimeDelivery: 0,
-    },
-  ])
-);
+// console.log(
+//   ShipmentsService.getShipmentList([
+//     {
+//       id: "PKG1",
+//       weight: 50,
+//       distance: 30,
+//       discountValue: 0,
+//       totalCost: 175,
+//       estimateTimeDelivery: 0,
+//     },
+//     {
+//       id: "PKG2",
+//       weight: 75,
+//       distance: 125,
+//       discountValue: 0,
+//       totalCost: 275,
+//       estimateTimeDelivery: 0,
+//     },
+//     {
+//       id: "PKG3",
+//       weight: 175,
+//       distance: 100,
+//       discountValue: 35,
+//       totalCost: 665,
+//       estimateTimeDelivery: 0,
+//     },
+//     {
+//       id: "PKG4",
+//       weight: 110,
+//       distance: 60,
+//       discountValue: 0,
+//       totalCost: 275,
+//       estimateTimeDelivery: 0,
+//     },
+//     {
+//       id: "PKG5",
+//       weight: 155,
+//       distance: 95,
+//       discountValue: 35,
+//       totalCost: 665,
+//       estimateTimeDelivery: 0,
+//     },
+//   ])
+// );
