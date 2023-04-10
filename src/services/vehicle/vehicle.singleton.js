@@ -1,4 +1,14 @@
-export class VehicleSingleton {
+import {
+  ModelPackageWithPrice,
+  ModelPackageWithPriceWithDeliveryTime,
+} from "../../models/package.js";
+
+Number.prototype.toFixedNoRound = function(precision = 1) {
+  const factor = Math.pow(10, precision);
+  return Math.floor(this * factor) / factor;
+}
+
+class VehicleSingleton {
   constructor() {
     if (!VehicleSingleton.instance) {
       VehicleSingleton.instance = this;
@@ -13,6 +23,7 @@ export class VehicleSingleton {
       maxSpeed: vehicleMaxSpeed,
       maxCarryWeight: vehicleMaxCarryWeight,
       packages: [],
+      currentTime: 0,
     }));
   }
 
@@ -23,4 +34,50 @@ export class VehicleSingleton {
   getVehicleMaxSpeed() {
     return this.vehicles[0]?.maxSpeed || 0;
   }
+
+  getEarlistVehicleAvailability() {
+    return this.vehicles.reduce((acc, curr) => {
+      if (acc.currentTime < curr.currentTime) {
+        return acc;
+      }
+      return curr;
+    });
+  }
+
+  estimateDeliveryTime(shipments) {
+    const vehicleMaxSpeed = this.getVehicleMaxSpeed();
+    let tempShipments = [...shipments];
+    let newPackages = [];
+    while (tempShipments.length > 0) {
+      const shipment = tempShipments.shift();
+
+      const { pairs, weight } = shipment;
+      const vehicle = this.getEarlistVehicleAvailability();
+      let totalTime = vehicle.currentTime;
+      pairs.forEach((pair) => {
+        const deliveryTime = Number(
+          Number(pair.distance / vehicleMaxSpeed) + Number(vehicle.currentTime)
+        ).toFixedNoRound(2);
+        if (Number(deliveryTime) > totalTime) {
+          totalTime = Number(deliveryTime);
+        }
+        const { packageId, weight, distance, couponCode, price, discount } =
+          pair;
+        const tempPackage = new ModelPackageWithPriceWithDeliveryTime(
+          packageId,
+          weight,
+          distance,
+          couponCode,
+          price,
+          discount,
+          deliveryTime
+        );
+        newPackages.push(tempPackage);
+      });
+      vehicle.currentTime = totalTime * 2;
+    }
+    console.log(newPackages);
+  }
 }
+
+export default new VehicleSingleton();

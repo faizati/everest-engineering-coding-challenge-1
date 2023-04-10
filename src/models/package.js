@@ -14,3 +14,19 @@ export class ModelPackageWithPrice extends ModelPackage {
     this.discount = discount;
   }
 }
+
+
+export class ModelPackageWithPriceWithDeliveryTime extends ModelPackageWithPrice {
+  constructor(
+    packageId,
+    weight,
+    distance,
+    couponCode,
+    price,
+    discount,
+    deliveryTime
+  ) {
+    super(packageId, weight, distance, couponCode, price, discount);
+    this.deliveryTime = deliveryTime;
+  }
+}

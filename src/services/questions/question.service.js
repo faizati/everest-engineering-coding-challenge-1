@@ -3,6 +3,8 @@ import CLIServiceSingleton from "../cli/cli.singleton.js";
 import CouponSingleton from "../coupon/coupon.singleton.js";
 import DeliverySingleton from "../delivery/delivery.singleton.js";
 import { PackagePriceDiscountFacade } from "../price/price.js";
+import { ShipmentsService } from "../shipment/shipment.service.js";
+import VehicleSingleton from "../vehicle/vehicle.singleton.js";
 import AbstractQuestion from "./question.abstract.js";
 import Table from "cli-table3";
 
@@ -168,7 +170,7 @@ export class GetPackageDetail extends AbstractQuestion {
       DeliverySingleton
     );
     const table = new Table({
-      head: ["Packeg Id", "Package Discount", "Package Price"],
+      head: ["Package Id", "Package Discount", "Package Price"],
       colWidths: [15, 18, 18],
       wordWrap: true,
     });
@@ -178,6 +180,12 @@ export class GetPackageDetail extends AbstractQuestion {
       table.push([pckg.packageId, pckg.discount, pckg.price]);
     });
     console.log(table.toString());
+
+    const shipmentLists = ShipmentsService.getShipmentList(packagesWithPrice, 200);
+    console.log(shipmentLists, 'shipment lists');
+    VehicleSingleton.createVehicle(2, 70, 200);
+
+    VehicleSingleton.estimateDeliveryTime(shipmentLists);
 
     return "Default";
   }

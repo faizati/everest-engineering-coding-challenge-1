@@ -51,3 +51,15 @@ export class PackagePriceDiscountFacade extends AbstractPrice {
     return newPackagePrice;
   }
 }
+
+
+export class PackagePriceDiscountWithDeliveryTimeFacade extends PackagePriceDiscountFacade {
+  constructor(couponSingleton, deliverySingleton) {
+    super(couponSingleton, deliverySingleton);
+  }
+
+ 
+  estimatePrice() {
+    const listOfPackages = super.estimatePrice();
+  }
+}

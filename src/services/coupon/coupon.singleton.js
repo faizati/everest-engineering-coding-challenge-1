@@ -39,6 +39,7 @@ class CouponSingleton {
 
   checkCouponDiscountPrice(couponCode, distance, weight) {
     const couponCodeDetail = this.getCouponByCouponCode(couponCode);
+    if(!couponCodeDetail) return 0;
     const { discount, distanceRange, weightRange } = couponCodeDetail;
     let discountPrice = 0;
     if (couponCodeDetail) {
