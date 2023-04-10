@@ -76,7 +76,10 @@ class VehicleSingleton {
       });
       vehicle.currentTime = totalTime * 2;
     }
-    console.log(newPackages);
+
+    newPackages.sort((a, b) => a.packageId - b.packageId);
+
+    return newPackages;
   }
 }
 

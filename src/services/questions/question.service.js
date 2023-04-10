@@ -45,7 +45,6 @@ export class MenuQuestion extends AbstractQuestion {
         message: "Please select below option",
         choices: [
           "Calculate Delivery Cost",
-          "Calculate Delivery Time",
           "Get Coupons",
           "Add New Coupon",
           "Exit",
@@ -169,23 +168,60 @@ export class GetPackageDetail extends AbstractQuestion {
       CouponSingleton,
       DeliverySingleton
     );
-    const table = new Table({
-      head: ["Package Id", "Package Discount", "Package Price"],
-      colWidths: [15, 18, 18],
-      wordWrap: true,
-    });
+    
 
     const packagesWithPrice = packagePriceDiscountFacade.estimatePrice();
-    packagesWithPrice.forEach((pckg) => {
-      table.push([pckg.packageId, pckg.discount, pckg.price]);
-    });
-    console.log(table.toString());
 
-    const shipmentLists = ShipmentsService.getShipmentList(packagesWithPrice, 200);
-    console.log(shipmentLists, 'shipment lists');
-    VehicleSingleton.createVehicle(2, 70, 200);
+    const { calculateDeliveryTime } = await CLIServiceSingleton.prompt([
+      {
+        type: "input",
+        name: "calculateDeliveryTime",
+        message: "Calculate delivery time? (Y/N)",
+        validate: function (value) {
+          if (value.length && (value.toLowerCase() == "y" || value.toLowerCase() == "n")) {
+            return true;
+          } else {
+            return "Please enter either Y or N";
+          }
+        },
+      },
+    ]);
 
-    VehicleSingleton.estimateDeliveryTime(shipmentLists);
+    
+
+    if(calculateDeliveryTime.toLowerCase() == "n") {
+      const table = new Table({
+        head: ["Package Id", "Package Discount", "Package Price"],
+        colWidths: [15, 18, 18],
+        wordWrap: true,
+      });
+      packagesWithPrice.forEach((pckg) => {
+        table.push([pckg.packageId, pckg.discount, pckg.price]);
+      });
+      console.log(table.toString());
+    }
+    else {
+      const shipmentLists = ShipmentsService.getShipmentList(packagesWithPrice, 200);
+      console.log(shipmentLists, 'shipment lists');
+      VehicleSingleton.createVehicle(2, 70, 200);
+  
+      const packagesWithDeliveryTime = VehicleSingleton.estimateDeliveryTime(shipmentLists);
+      const table = new Table({
+        head: ["Package Id", "Package Discount", "Package Price", "Delivery Time"],
+        colWidths: [15, 18, 18, 18],
+        wordWrap: true,
+      });
+
+      packagesWithDeliveryTime.forEach((pckg) => {
+        table.push([pckg.packageId, pckg.discount, pckg.price, pckg.deliveryTime]);
+      });
+      console.log(table.toString());
+    }
+
+   
+    
+
+   
 
     return "Default";
   }
