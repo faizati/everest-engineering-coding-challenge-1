@@ -225,6 +225,7 @@ export class GetPackageDetail extends AbstractQuestion {
               return "Please enter the vehicle max speed";
             }
           }
+        },
         {
           type: "input",
           name: "vehicleMaxCarryWeight",
