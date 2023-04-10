@@ -201,9 +201,46 @@ export class GetPackageDetail extends AbstractQuestion {
       console.log(table.toString());
     }
     else {
-      const shipmentLists = ShipmentsService.getShipmentList(packagesWithPrice, 200);
-      console.log(shipmentLists, 'shipment lists');
-      VehicleSingleton.createVehicle(2, 70, 200);
+      const { noOfVehicles, vehicleMaxSpeed, vehicleMaxCarryWeight } = await CLIServiceSingleton.prompt([
+        {
+          type: "input",
+          name: "noOfVehicles",
+          message: "Number of vehicles?",
+          validate: function (value) {
+            if (value.length && typeof parseInt(value) == "number") {
+              return true;
+            } else {
+              return "Please enter the number of vehicles";
+            }
+          },
+        },
+        {
+          type: "input",
+          name: "vehicleMaxSpeed",
+          message: "Vehicle max speed?",
+          validate: function (value) {
+            if (value.length && typeof parseInt(value) == "number") {
+              return true;
+            } else {
+              return "Please enter the vehicle max speed";
+            }
+          }
+        {
+          type: "input",
+          name: "vehicleMaxCarryWeight",
+          message: "Vehicle max carry weight?",
+          validate: function (value) {
+            if (value.length && typeof parseInt(value) == "number") {
+              return true;
+            } else {
+              return "Please enter the vehicle max carry weight";
+            }
+          },
+        },
+      ]);
+     
+      VehicleSingleton.createVehicle(noOfVehicles, vehicleMaxSpeed, vehicleMaxCarryWeight);
+      const shipmentLists = ShipmentsService.getShipmentList(packagesWithPrice, vehicleMaxCarryWeight);
   
       const packagesWithDeliveryTime = VehicleSingleton.estimateDeliveryTime(shipmentLists);
       const table = new Table({
