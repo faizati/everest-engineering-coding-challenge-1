@@ -1,0 +1,4 @@
+- get delivery cost estimation and time
+- improve cli input validation
+- separate delivery and package
+- simplify code by using SOLID

@@ -1,5 +1,5 @@
-const coupons = require("../../data/coupon/coupons.json");
-const { CouponUtils } = require("../utils/coupon.util");
+import coupons from "../../data/coupon/coupons.json" assert { type: "json" };
+import { CouponUtils } from "../utils/coupon.util.js";
 
 class CouponSingleton {
   constructor() {
@@ -39,6 +39,7 @@ class CouponSingleton {
 
   checkCouponDiscountPrice(couponCode, distance, weight) {
     const couponCodeDetail = this.getCouponByCouponCode(couponCode);
+    if (!couponCodeDetail) return 0;
     const { discount, distanceRange, weightRange } = couponCodeDetail;
     let discountPrice = 0;
     if (couponCodeDetail) {
@@ -62,4 +63,4 @@ class CouponSingleton {
   }
 }
 
-exports.CouponSingleton = new CouponSingleton();
+export default new CouponSingleton();

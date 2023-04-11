@@ -1,7 +1,6 @@
-const { ModelPackageWithPrice } = require("../../models/package");
-const { AbstractPrice } = require("./price.abstract");
-
-class PackagePriceDiscountFacade extends AbstractPrice {
+import { ModelPackageWithPrice } from "../../models/package.js";
+import { AbstractPrice } from "./price.abstract.js";
+export class PackagePriceDiscountFacade extends AbstractPrice {
   constructor(couponSingleton, deliverySingleton) {
     super();
     this.couponSingleton = couponSingleton;
@@ -28,13 +27,13 @@ class PackagePriceDiscountFacade extends AbstractPrice {
     const discountPrice = originalPrice * (discountPercentage / 100);
 
     const price = originalPrice - discountPrice;
-    return price;
+    return { price, discountPrice };
   }
 
   estimatePrice() {
     const listOfPackages = this.deliverySingleton.getAllPackages();
     const newPackagePrice = listOfPackages.map((pckg) => {
-      const price = this.calculatePackagePrice(
+      const { price, discountPrice } = this.calculatePackagePrice(
         pckg,
         this.deliverySingleton.baseDeliveryCost
       );
@@ -43,7 +42,8 @@ class PackagePriceDiscountFacade extends AbstractPrice {
         pckg.weight,
         pckg.distance,
         pckg.couponCode,
-        price
+        price,
+        discountPrice
       );
 
       return packageWithPrice;
@@ -52,4 +52,14 @@ class PackagePriceDiscountFacade extends AbstractPrice {
   }
 }
 
-exports.PackagePriceDiscountFacade = PackagePriceDiscountFacade;
+
+export class PackagePriceDiscountWithDeliveryTimeFacade extends PackagePriceDiscountFacade {
+  constructor(couponSingleton, deliverySingleton) {
+    super(couponSingleton, deliverySingleton);
+  }
+
+ 
+  estimatePrice() {
+    const listOfPackages = super.estimatePrice();
+  }
+}

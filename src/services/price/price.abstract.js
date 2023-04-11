@@ -1,4 +1,4 @@
-class AbstractPrice {
+export class AbstractPrice {
   constructor() {
     if (this.constructor == AbstractPrice) {
       throw new Error("Abstract classes can't be instantiated.");
@@ -9,5 +9,3 @@ class AbstractPrice {
     throw new Error("Method 'estimatePrice()' must be implemented.");
   }
 }
-
-exports.AbstractPrice = AbstractPrice;

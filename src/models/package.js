@@ -1,4 +1,4 @@
-class ModelPackage {
+export class ModelPackage {
   constructor(packageId, weight, distance, couponCode) {
     this.packageId = packageId;
     this.weight = weight;
@@ -7,12 +7,28 @@ class ModelPackage {
   }
 }
 
-class ModelPackageWithPrice extends ModelPackage {
-  constructor(packageId, weight, distance, couponCode, price) {
+export class ModelPackageWithPrice extends ModelPackage {
+  constructor(packageId, weight, distance, couponCode, price, discount) {
     super(packageId, weight, distance, couponCode);
     this.price = price;
+    this.discount =
+      discount && typeof discount === "number"
+        ? Number(discount.toFixed(2))
+        : 0;
   }
 }
 
-exports.ModelPackage = ModelPackage;
-exports.ModelPackageWithPrice = ModelPackageWithPrice;
+export class ModelPackageWithPriceWithDeliveryTime extends ModelPackageWithPrice {
+  constructor(
+    packageId,
+    weight,
+    distance,
+    couponCode,
+    price,
+    discount,
+    deliveryTime
+  ) {
+    super(packageId, weight, distance, couponCode, price, discount);
+    this.deliveryTime = deliveryTime;
+  }
+}
