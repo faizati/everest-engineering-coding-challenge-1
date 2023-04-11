@@ -11,10 +11,12 @@ export class ModelPackageWithPrice extends ModelPackage {
   constructor(packageId, weight, distance, couponCode, price, discount) {
     super(packageId, weight, distance, couponCode);
     this.price = price;
-    this.discount = discount;
+    this.discount =
+      discount && typeof discount === "number"
+        ? Number(discount.toFixed(2))
+        : 0;
   }
 }
-
 
 export class ModelPackageWithPriceWithDeliveryTime extends ModelPackageWithPrice {
   constructor(

@@ -168,7 +168,6 @@ export class GetPackageDetail extends AbstractQuestion {
       CouponSingleton,
       DeliverySingleton
     );
-    
 
     const packagesWithPrice = packagePriceDiscountFacade.estimatePrice();
 
@@ -178,7 +177,10 @@ export class GetPackageDetail extends AbstractQuestion {
         name: "calculateDeliveryTime",
         message: "Calculate delivery time? (Y/N)",
         validate: function (value) {
-          if (value.length && (value.toLowerCase() == "y" || value.toLowerCase() == "n")) {
+          if (
+            value.length &&
+            (value.toLowerCase() == "y" || value.toLowerCase() == "n")
+          ) {
             return true;
           } else {
             return "Please enter either Y or N";
@@ -187,9 +189,7 @@ export class GetPackageDetail extends AbstractQuestion {
       },
     ]);
 
-    
-
-    if(calculateDeliveryTime.toLowerCase() == "n") {
+    if (calculateDeliveryTime.toLowerCase() == "n") {
       const table = new Table({
         head: ["Package Id", "Package Discount", "Package Price"],
         colWidths: [15, 18, 18],
@@ -199,67 +199,82 @@ export class GetPackageDetail extends AbstractQuestion {
         table.push([pckg.packageId, pckg.discount, pckg.price]);
       });
       console.log(table.toString());
-    }
-    else {
-      const { noOfVehicles, vehicleMaxSpeed, vehicleMaxCarryWeight } = await CLIServiceSingleton.prompt([
-        {
-          type: "input",
-          name: "noOfVehicles",
-          message: "Number of vehicles?",
-          validate: function (value) {
-            if (value.length && typeof parseInt(value) == "number") {
-              return true;
-            } else {
-              return "Please enter the number of vehicles";
-            }
+    } else {
+      const { noOfVehicles, vehicleMaxSpeed, vehicleMaxCarryWeight } =
+        await CLIServiceSingleton.prompt([
+          {
+            type: "input",
+            name: "noOfVehicles",
+            message: "Number of vehicles?",
+            validate: function (value) {
+              if (value.length && typeof parseInt(value) == "number") {
+                return true;
+              } else {
+                return "Please enter the number of vehicles";
+              }
+            },
           },
-        },
-        {
-          type: "input",
-          name: "vehicleMaxSpeed",
-          message: "Vehicle max speed?",
-          validate: function (value) {
-            if (value.length && typeof parseInt(value) == "number") {
-              return true;
-            } else {
-              return "Please enter the vehicle max speed";
-            }
-          }
-        },
-        {
-          type: "input",
-          name: "vehicleMaxCarryWeight",
-          message: "Vehicle max carry weight?",
-          validate: function (value) {
-            if (value.length && typeof parseInt(value) == "number") {
-              return true;
-            } else {
-              return "Please enter the vehicle max carry weight";
-            }
+          {
+            type: "input",
+            name: "vehicleMaxSpeed",
+            message: "Vehicle max speed?",
+            validate: function (value) {
+              if (value.length && typeof parseInt(value) == "number") {
+                return true;
+              } else {
+                return "Please enter the vehicle max speed";
+              }
+            },
           },
-        },
-      ]);
-     
-      VehicleSingleton.createVehicle(noOfVehicles, vehicleMaxSpeed, vehicleMaxCarryWeight);
-      const shipmentLists = ShipmentsService.getShipmentList(packagesWithPrice, vehicleMaxCarryWeight);
-  
-      const packagesWithDeliveryTime = VehicleSingleton.estimateDeliveryTime(shipmentLists);
+          {
+            type: "input",
+            name: "vehicleMaxCarryWeight",
+            message: "Vehicle max carry weight?",
+            validate: function (value) {
+              if (value.length && typeof parseInt(value) == "number") {
+                return true;
+              } else {
+                return "Please enter the vehicle max carry weight";
+              }
+            },
+          },
+        ]);
+
+      VehicleSingleton.createVehicle(
+        noOfVehicles,
+        vehicleMaxSpeed,
+        vehicleMaxCarryWeight
+      );
+      const shipmentLists = ShipmentsService.getShipmentList(
+        packagesWithPrice,
+        vehicleMaxCarryWeight
+      );
+
+      const packagesWithDeliveryTime =
+        VehicleSingleton.estimateDeliveryTime(shipmentLists);
       const table = new Table({
-        head: ["Package Id", "Package Discount", "Package Price", "Delivery Time"],
+        head: [
+          "Package Id",
+          "Package Discount",
+          "Package Price",
+          "Delivery Time",
+        ],
         colWidths: [15, 18, 18, 18],
         wordWrap: true,
       });
 
+      packagesWithDeliveryTime.sort((a, b) => a.packageId - b.packageId);
+
       packagesWithDeliveryTime.forEach((pckg) => {
-        table.push([pckg.packageId, pckg.discount, pckg.price, pckg.deliveryTime]);
+        table.push([
+          pckg.packageId,
+          pckg.discount,
+          pckg.price,
+          pckg.deliveryTime,
+        ]);
       });
       console.log(table.toString());
     }
-
-   
-    
-
-   
 
     return "Default";
   }
