@@ -1,5 +1,5 @@
-const { ModelPackage } = require("../../models/package");
-const { DeliverySingleton } = require("./delivery.singleton");
+import { ModelPackage } from "../../models/package.js";
+import DeliverySingleton from "./delivery.singleton.js";
 
 describe("Delivery Singleton Unit Testing", () => {
   test("check default delivery structure", () => {

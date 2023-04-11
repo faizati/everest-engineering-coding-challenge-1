@@ -1,7 +1,7 @@
-const CouponSingleton = require("../coupon/coupon.singleton");
-const { PackagePriceDiscountFacade } = require("./price");
-const { DeliverySingleton } = require("../delivery/delivery.singleton");
-const { ModelPackage } = require("../../models/package");
+import CouponSingleton from "../coupon/coupon.singleton.js";
+import { PackagePriceDiscountFacade } from "./price.js";
+import DeliverySingleton from "../delivery/delivery.singleton.js";
+import { ModelPackage } from "../../models/package";
 
 const packagePriceDiscountFacade = new PackagePriceDiscountFacade(
   CouponSingleton,
@@ -38,6 +38,7 @@ describe("PackagePriceDiscountFacade Operation Testing", () => {
         distance: 5,
         couponCode: "OFR001",
         price: 175,
+        discount: 0,
       },
       {
         packageId: "PKG002",
@@ -45,6 +46,7 @@ describe("PackagePriceDiscountFacade Operation Testing", () => {
         distance: 5,
         couponCode: "OFR002",
         price: 275,
+        discount: 0,
       },
       {
         packageId: "PKG003",
@@ -52,6 +54,7 @@ describe("PackagePriceDiscountFacade Operation Testing", () => {
         distance: 100,
         couponCode: "OFR003",
         price: 665,
+        discount: 35,
       },
     ]);
   });
