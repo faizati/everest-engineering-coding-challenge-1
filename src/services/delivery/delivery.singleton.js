@@ -24,6 +24,10 @@ class DeliverySingleton {
     } else return "Package limit exceeded";
   }
 
+  resetPackage() {
+    this.pckg = [];
+  }
+
   getAllPackages() {
     return this.pckg;
   }
